@@ -18,6 +18,13 @@ app.controller('mainCtrl', function($scope, itunesService){
       ]
   };
 
+
+  $scope.getSongData = function() {
+    itunesService.getSongData($scope.artist).then(function(response) {
+      $scope.songData = response;
+      console.log(response);
+    });
+  }
   //Our controller is what's going to connect our 'heavy lifting' itunesService with our view (index.html) so our user can see the results they get back from itunes.
 
   //First inject itunesService into your controller.

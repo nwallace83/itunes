@@ -1,6 +1,28 @@
 var app = angular.module('itunes');
 
 app.service('itunesService', function($http, $q){
+
+	this.getSongData= function(artist) {
+		return $q(function(resolve, reject) {
+				$http.jsonp('https://itunes.apple.com/search?term=' + artist + '&callback=JSON_CALLBACK').then(function(result) {
+					console.log(result);
+					var returnArray = [];
+					result.data.results.forEach(function(i) {
+						returnArray.push({
+							Play: i.previewUrl,
+							Artist: i.artistName,
+							Collection: i.collectionName,
+							AlbumArt: i.artworkUrl30,
+							Type: i.wrapperType + ' - ' + i.trackName,
+							CollectionPrice: i.collectionPrice
+						});
+					})
+					console.log(returnArray);
+					resolve(returnArray);
+				})
+			});
+		}
+
   //This service is what will do the 'heavy lifting' and get our data from the iTunes API.
   //Also note that we're using a 'service' and not a 'factory' so all your methods you want to call in your controller need to be on 'this'.
 
